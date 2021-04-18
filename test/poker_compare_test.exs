@@ -104,30 +104,42 @@ defmodule PokerCompareTest do
 
   @tag :compare
   test "Triple hand" do
-    assert { 5, _list} = PokerCompare.player_high(["5D", "5H", "5C", "2D", "4S"])
+    assert { :triple, _list} = PokerCompare.player_high(["5D", "5H", "5C", "2D", "4S"])
   end
 
   @tag :compare
   test "straight hand" do
-    assert { 6, _list} = PokerCompare.player_high(["2D", "6H", "3C", "4D", "5S"])
+    assert { :straight, _list} = PokerCompare.player_high(["2D", "6H", "3C", "4D", "5S"])
   end
 
-  # @tag :compare
+  @tag :compare
   test "White win with High Card Ace" do
     assert PokerCompare.compare(["2H", "3D", "5S", "9C", "KD"], ["2C", "3H", "4S", "8C", "AH"]) ==
       "White wins. - with high card: Ace"
   end
 
-  # @tag :compare
+  @tag :compare
   test "Black win with High Card 9" do
     assert PokerCompare.compare(["2H", "3D", "5S", "9C", "KD"], ["2C", "3H", "4S", "8C", "KH"]) ==
       "Black wins. - with high card: 9"
   end
 
-  # @tag :compare
+  @tag :compare
   test "White win with High Card Jack" do
     assert PokerCompare.compare(["2H", "3H", "5H", "9H", "8H"], ["4H", "7H", "TH", "JH", "6H"]) ==
       "White wins. - with high card: Jack"
+  end
+
+  @tag :compare
+  test "White win with Royal Flush" do
+    assert PokerCompare.compare(["6H", "7H", "5H", "9H", "8H"], ["TH", "JH", "KH", "QH", "AH"]) ==
+      "White wins. With Royal Flush"
+  end
+
+  # @tag :compare
+  test "Black win with 3 of a kind" do
+    assert PokerCompare.compare(["6H", "6C", "6D", "9H", "8H"], ["TH", "TC", "9H", "9S", "AH"]) ==
+      "Black wins. With 3 of a kind"
   end
 
 

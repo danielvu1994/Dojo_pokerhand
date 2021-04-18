@@ -1,5 +1,5 @@
 defmodule PokerCompare do
-  @card_high %{
+  @rank_high %{
     royal_flush: 11,
     straight_flush: 10,
     quads: 9,
@@ -10,6 +10,19 @@ defmodule PokerCompare do
     two_pairs: 4,
     pair: 3,
     high_card: 2
+  }
+
+  @rank_title %{
+    royal_flush: "Royal Flush",
+    straight_flush: "Straight Flush",
+    quads: "4 of a kind",
+    full_house: "Full house",
+    flush: "Flush",
+    straight: "Straight",
+    triple: "3 of a kind",
+    two_pairs: "Two pairs",
+    pair: "Pair",
+    high_card: "High card"
   }
   #
   # @play_high %{
@@ -22,12 +35,22 @@ defmodule PokerCompare do
   def compare(black, white) do
     {rank_b, no_cards_b} = player_high(black)
     {rank_w, no_cards_w} = player_high(white)
-    compare(rank_b, no_cards_b, rank_w, no_cards_w)
+    IO.puts "Daniel rank_b #{@rank_high[rank_b]} rank_w #{@rank_high[rank_w]}"
+    case compare_rank(@rank_high[rank_b], @rank_high[rank_w]) do
+      :white ->
+        "White wins. With #{@rank_title[rank_w]}"
+      :black ->
+        "Black wins. With #{@rank_title[rank_b]}"
+      _ -> # tie_for_now
+        check_depper(no_cards_b, no_cards_w)
+    end
   end
 
-  defp compare(rank_b, _no_cards_b, rank_w, _no_cards_w) when rank_b > rank_w, do: "Black wins."
-  defp compare(rank_b, _no_cards_b, rank_w, _no_cards_w) when rank_b < rank_w, do: "White wins."
-  defp compare(_, no_cards_b, _, no_cards_w) do
+  defp compare_rank(rank_b, rank_w) when rank_b > rank_w, do: :black
+  defp compare_rank(rank_b, rank_w) when rank_b < rank_w, do: :white
+  defp compare_rank(_, _), do: :tie_for_now
+
+  defp check_depper(no_cards_b, no_cards_w) do
     no_cards_b = Enum.sort(no_cards_b, &(&1 >= &2))
     no_cards_w = Enum.sort(no_cards_w, &(&1 >= &2))
     case check_high_card(no_cards_b, no_cards_w) do
@@ -45,7 +68,7 @@ defmodule PokerCompare do
   defp check_high_card([h_b | _], [h_w | _]) when h_b < h_w, do: {:white, h_w}
   defp check_high_card([_| tl_b], [_| tl_w]), do: check_high_card(tl_b, tl_w)
 
-  @spec player_high([String.t()]) :: {integer, [integer]}
+  @spec player_high([String.t()]) :: {atom, [integer]}
   def player_high(cards) do
     cards =
       cards
@@ -58,25 +81,25 @@ defmodule PokerCompare do
     rank_high =
       cond do
         is_royal_flush?(no_cards, type_cards) ->
-          @card_high.royal_flush
+          :royal_flush
         is_straigh_flush?(no_cards, type_cards) ->
-          @card_high.straight_flush
+          :straight_flush
         is_quads?(no_cards) ->
-          @card_high.quads
+          :quads
         is_full_house?(no_cards) ->
-          @card_high.full_house
+          :full_house
         is_flush?(type_cards) ->
-          @card_high.flush
+          :flush
         is_straight?(no_cards) ->
-          @card_high.straight
+          :straight
         is_triple?(no_cards) ->
-          @card_high.triple
+          :triple
         is_two_pairs?(no_cards) ->
-          @card_high.triple
+          :two_pairs
         is_pair?(no_cards) ->
-          @card_high.pair
+          :pair
         true ->
-          @card_high.high_card
+          :high_card
       end
     {rank_high, no_cards}
   end
