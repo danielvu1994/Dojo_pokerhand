@@ -3,15 +3,6 @@ defmodule Pokerhands do
   Documentation for `Pokerhands`.
   """
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Pokerhands.hello()
-      :world
-
-  """
   def cal_result(black, white) do
     {valid, reason} = is_card_valid?(black ,white)
 
@@ -27,7 +18,7 @@ defmodule Pokerhands do
   end
 
 
-  # Compare part
+  # Check valid cards
   defp is_card_valid?(black, white) do
     {valid_b, reason_b} = player_cards_valid?(black)
     {valid_w, reason_w} = player_cards_valid?(white)
