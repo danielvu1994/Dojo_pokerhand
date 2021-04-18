@@ -1,22 +1,25 @@
 defmodule Pokerhands do
+  require PokerCompare
   @moduledoc """
   Documentation for `Pokerhands`.
   """
-
   def cal_result(black, white) do
-    {valid, reason} = is_card_valid?(black ,white)
+    black = convert_to_list_card(black)
+    white = convert_to_list_card(white)
 
+    {valid, reason} = is_card_valid?(black ,white)
     if valid == :error do
       {valid, reason}
     else    # :ok
-      compare(black, white)
+      PokerCompare.compare(black, white)
     end
   end
 
-  defp compare(_black, _white) do
-    :true
+  defp convert_to_list_card(cards) do
+    cards
+    |> String.split([" "], trim: true)
+    |> Enum.map(&String.upcase(&1))
   end
-
 
   # Check valid cards
   defp is_card_valid?(black, white) do
@@ -36,11 +39,6 @@ defmodule Pokerhands do
   end
 
   defp player_cards_valid?(cards) do
-    cards=
-      cards
-      |> String.split([" "], trim: true)
-      |> Enum.map(&String.upcase(&1))
-
     num_of_cards = length(cards)
 
     valid_cards =
