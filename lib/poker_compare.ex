@@ -36,13 +36,14 @@ defmodule PokerCompare do
     {rank_b, no_cards_b} = player_high(black)
     {rank_w, no_cards_w} = player_high(white)
     IO.puts "Daniel rank_b #{@rank_high[rank_b]} rank_w #{@rank_high[rank_w]}"
+
     case compare_rank(@rank_high[rank_b], @rank_high[rank_w]) do
       :white ->
         "White wins. With #{@rank_title[rank_w]}"
       :black ->
         "Black wins. With #{@rank_title[rank_b]}"
       _ -> # tie_for_now
-        check_depper(no_cards_b, no_cards_w)
+        check_depper(no_cards_b, no_cards_w, rank_b)
     end
   end
 
@@ -50,14 +51,14 @@ defmodule PokerCompare do
   defp compare_rank(rank_b, rank_w) when rank_b < rank_w, do: :white
   defp compare_rank(_, _), do: :tie_for_now
 
-  defp check_depper(no_cards_b, no_cards_w) do
+  defp check_depper(no_cards_b, no_cards_w, rank_tie) do
     no_cards_b = Enum.sort(no_cards_b, &(&1 >= &2))
     no_cards_w = Enum.sort(no_cards_w, &(&1 >= &2))
     case check_high_card(no_cards_b, no_cards_w) do
       {:black, h_b} ->
-        "Black wins. - with high card: #{sw_back(h_b)}"
+        "Black wins. With #{@rank_title[rank_tie]} but higher card: #{sw_back(h_b)}"
       {:white, h_w} ->
-        "White wins. - with high card: #{sw_back(h_w)}"
+        "White wins. With #{@rank_title[rank_tie]} but higher card: #{sw_back(h_w)}"
       _ ->
         "Tie."
     end

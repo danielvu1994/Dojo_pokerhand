@@ -11,7 +11,7 @@ defmodule Pokerhands do
     if valid == :error do
       {valid, reason}
     else    # :ok
-      PokerCompare.compare(black, white)
+      {:ok, PokerCompare.compare(black, white)}
     end
   end
 

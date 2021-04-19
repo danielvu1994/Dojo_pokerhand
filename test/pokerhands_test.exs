@@ -29,19 +29,19 @@ defmodule PokerhandsTest do
   @tag :pending
   test "White win with High Card" do
     assert Pokerhands.cal_result("2H 3D 5S 9C KD", "2C 3H 4S 8C AH") ==
-      {:ok, "White wins. - with high card: Ace"}
+      {:ok, "White wins. With High card but higher card: Ace"}
   end
 
   @tag :pending
   test "Black  hite win with full house" do
     assert Pokerhands.cal_result("2H 4S 4C 2D 4H", "2S 8S AS QS 3S") ==
-      {:ok, "Black wins. - with full house: 4 over 2"}
+      {:ok, "Black wins. With Full house"}
   end
 
   @tag :pending
   test "Black win with high card" do
     assert Pokerhands.cal_result("2H 3D 5S 9C KD", "2C 3H 4S 8C KH") ==
-      {:ok, "Black wins. - with high card: 9"}
+      {:ok, "Black wins. With High card but higher card: 9"}
   end
 
   @tag :pending

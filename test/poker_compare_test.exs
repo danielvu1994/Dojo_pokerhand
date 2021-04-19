@@ -115,19 +115,19 @@ defmodule PokerCompareTest do
   @tag :compare
   test "White win with High Card Ace" do
     assert PokerCompare.compare(["2H", "3D", "5S", "9C", "KD"], ["2C", "3H", "4S", "8C", "AH"]) ==
-      "White wins. - with high card: Ace"
+      "White wins. With High card but higher card: Ace"
   end
 
   @tag :compare
   test "Black win with High Card 9" do
     assert PokerCompare.compare(["2H", "3D", "5S", "9C", "KD"], ["2C", "3H", "4S", "8C", "KH"]) ==
-      "Black wins. - with high card: 9"
+      "Black wins. With High card but higher card: 9"
   end
 
   @tag :compare
   test "White win with High Card Jack" do
     assert PokerCompare.compare(["2H", "3H", "5H", "9H", "8H"], ["4H", "7H", "TH", "JH", "6H"]) ==
-      "White wins. - with high card: Jack"
+      "White wins. With Flush but higher card: Jack"
   end
 
   @tag :compare
@@ -140,6 +140,12 @@ defmodule PokerCompareTest do
   test "Black win with 3 of a kind" do
     assert PokerCompare.compare(["6H", "6C", "6D", "9H", "8H"], ["TH", "TC", "9H", "9S", "AH"]) ==
       "Black wins. With 3 of a kind"
+  end
+
+  # @tag :compare
+  test "Black win with 3 of a kind and higher card" do
+    assert PokerCompare.compare(["6H", "6C", "6D", "9H", "8H"], ["6H", "6C", "6D", "9S", "7H"]) ==
+      "Black wins. With 3 of a kind but higher card: 8"
   end
 
 
